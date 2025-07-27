@@ -1,0 +1,21 @@
+# Ignore node_modules for both frontend and backend
+node_modules/
+Frontend/newproject/node_modules/
+Backend/node_modules/
+
+# Ignore build output
+Frontend/newproject/dist/
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore logs
+*.log
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore uploads if not needed in repo
+Backend/uploads/

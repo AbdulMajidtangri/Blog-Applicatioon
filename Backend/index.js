@@ -7,7 +7,15 @@ const routes = require('./Routes/user')
 const blogroute = require('./Routes/blog')
 const path = require('path');
 const fs = require('fs');
-const port = 5000;
+
+require('dotenv').config();
+const port = process.env.PORT || 5000;
+const username = process.env.MONGO_USERNAME;
+const password = process.env.MONGO_PASSWORD;
+const db = process.env.MONGO_DB;
+const cluster = process.env.MONGO_CLUSTER;
+const appName = process.env.MONGO_APPNAME;
+const url = `mongodb+srv://${username}:${password}@${cluster}/${db}?retryWrites=true&w=majority&appName=${appName}`;
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -22,7 +30,7 @@ app.use(express.urlencoded({extended : true}));
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-mongoose.connect('mongodb://localhost:27017/connectingdbs', {
+mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
