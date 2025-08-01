@@ -4,6 +4,8 @@ import mycontext from '../Context/mycontext';
 
 const Navbar = () => {
   const { user, logout, token } = useContext(mycontext);
+  // Debug: Log user context to help diagnose 'Guest' issue
+  console.log('NAVBAR USER CONTEXT:', user);
 
   const handleLogout = async () => {
     try {
@@ -35,7 +37,7 @@ const Navbar = () => {
           color: 'var(--primary-color)',
           textDecoration: 'none'
         }}>
-          BlogHub
+          BlogsHub
         </a>
         
         <button 

@@ -8,13 +8,16 @@ const MyProvider = ({ children }) => {
   const [like,setlike] = useState();
   // Check if user is authenticated on app load
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-    
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+    // Always sync user and token from localStorage on mount and when storage changes
+    function syncUserFromStorage() {
+      const storedToken = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+      setToken(storedToken || null);
+      setUser(storedUser ? JSON.parse(storedUser) : null);
     }
+    syncUserFromStorage();
+    window.addEventListener('storage', syncUserFromStorage);
+    return () => window.removeEventListener('storage', syncUserFromStorage);
   }, []);
 
   const login = (userData, userToken) => {

@@ -52,14 +52,12 @@ const handleUserSignIn = async (req, res) => {
       return res.status(400).send({ message: 'User not found' });
     }
 
-    // ✅ Admin login logic (skip bcrypt for admin)
-    if (loweremail === admin) {
+          if (loweremail === admin) {
       if (password !== '1234567') {
         return res.status(400).send({ message: 'Invalid admin credentials' });
       }
     } else {
-      // ✅ Always compare hashed password using bcrypt
-      const isMatch = await bcrypt.compare(password, finduser.password);
+               const isMatch = await bcrypt.compare(password, finduser.password);
       if (!isMatch) {
         return res.status(400).send({ message: 'Invalid credentials' });
       }
