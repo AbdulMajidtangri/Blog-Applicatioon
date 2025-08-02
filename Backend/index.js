@@ -72,7 +72,13 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
+const cors = require('cors');
+
+app.use(cors({
+  origin: ['https://blog-applicatioon-q.vercel.app'], // Allow Vercel frontend
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 app.use('/auth', authRoute);
