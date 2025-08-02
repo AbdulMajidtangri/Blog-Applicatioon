@@ -27,7 +27,7 @@ const BlogDetail = () => {
   const fetchBlogDetail = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/blog/blog/${id}`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/blog/blog/${id}`);
       setBlog(response.data.blog);
     } catch (error) {
       console.error('Error fetching blog:', error);
@@ -50,12 +50,12 @@ const BlogDetail = () => {
       setLikingBlog(true);
       let response;
       if (!alreadyLiked) {
-        response = await axios.put(`http://localhost:5000/blog/like/${blog._id}`);
+        response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/blog/like/${blog._id}`);
         setBlog(prev => ({ ...prev, likes: response.data.likes }));
         localStorage.setItem(likedKey, 'true');
         showToast('Blog liked!', 'success');
       } else {
-        response = await axios.put(`http://localhost:5000/blog/like/${blog._id}?unlike=true`);
+        response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/blog/like/${blog._id}?unlike=true`);
         setBlog(prev => ({ ...prev, likes: Math.max(0, (prev.likes || 0) - 1) }));
         localStorage.removeItem(likedKey);
         showToast('Like removed!', 'info');
@@ -454,7 +454,7 @@ const BlogDetail = () => {
             marginBottom: '1.5rem'
           }}>
             <img 
-              src={`http://localhost:5000/uploads/${blog.image}`} 
+              src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${blog.image}`} 
               alt={blog.title}
               style={{
                 width: '100%',

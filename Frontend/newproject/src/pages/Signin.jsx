@@ -23,7 +23,7 @@ const Signin = () => {
     const handlesubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/signin', userdata);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signin`, userdata);
             // Use the login function from context
             login({
                 name: response.data.name,
@@ -173,7 +173,7 @@ const Signin = () => {
                 
                 <div style={{ textAlign: 'center', marginBottom: '24px' }}>
                     <a
-                        href="http://localhost:5000/auth/google"
+                        href={`${import.meta.env.VITE_BACKEND_URL}/auth/google`}
                         style={{
                             display: 'inline-flex',
                             alignItems: 'center',

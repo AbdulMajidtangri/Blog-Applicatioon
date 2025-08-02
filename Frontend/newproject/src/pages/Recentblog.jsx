@@ -17,7 +17,7 @@ const Recentblog = () => {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/blog/allblogs');
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/blog/allblogs`);
       setBlogs(response.data.blogs);
     } catch (error) {
       console.error('Error fetching blogs:', error);
@@ -34,7 +34,7 @@ const Recentblog = () => {
 
     try {
       setProcessingBlog(id);
-      await axios.put(`http://localhost:5000/blog/accept/${id}`, {}, {
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/blog/accept/${id}`, {}, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -65,7 +65,7 @@ const Recentblog = () => {
 
     try {
       setProcessingBlog(id);
-      await axios.delete(`http://localhost:5000/blog/reject/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/blog/reject/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -226,7 +226,7 @@ const Recentblog = () => {
                     position: 'relative'
                   }}>
                     <img 
-                      src={`http://localhost:5000/uploads/${blog.image}`} 
+                      src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${blog.image}`} 
                       alt={blog.title}
                       style={{ 
                         width: '100%', 

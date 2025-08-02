@@ -10,7 +10,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       if (token) {
-        await axios.post('http://localhost:5000/logout', {}, {
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

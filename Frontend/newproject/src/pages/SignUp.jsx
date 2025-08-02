@@ -32,7 +32,7 @@ const SignUp = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:5000/submitdata', trimmedData, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/submitdata`, trimmedData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

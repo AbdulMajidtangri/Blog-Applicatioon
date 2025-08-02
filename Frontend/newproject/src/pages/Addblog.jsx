@@ -55,7 +55,7 @@ const handlesubmit = async (e) => {
         formData.append('image', image);
       }
 
-      const response = await axios.post("http://localhost:5000/blog/addblog", formData, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/blog/addblog`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`

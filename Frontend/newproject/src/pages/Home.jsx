@@ -21,7 +21,7 @@ const Home = () => {
   const fetchAcceptedBlogs = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/blog/acceptedblogs');
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/blog/acceptedblogs`);
       setBlogs(response.data.blogs);
     } catch {
       setBlogs([]);
@@ -45,7 +45,7 @@ const Home = () => {
     try {
       let response;
       if (!alreadyLiked) {
-        response = await axios.put(`http://localhost:5000/blog/like/${blog._id}`);
+        response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/blog/like/${blog._id}`);
         setBlogs((prevBlogs) =>
           prevBlogs.map((b) =>
             b._id === blog._id ? { ...b, likes: response.data.likes } : b
@@ -53,7 +53,7 @@ const Home = () => {
         );
         localStorage.setItem(likedKey, 'true');
       } else {
-        response = await axios.put(`http://localhost:5000/blog/like/${blog._id}?unlike=true`);
+        response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/blog/like/${blog._id}?unlike=true`);
         setBlogs((prevBlogs) =>
           prevBlogs.map((b) =>
             b._id === blog._id ? { ...b, likes: Math.max(0, (b.likes || 0) - 1) } : b
@@ -318,7 +318,7 @@ const Home = () => {
                     position: 'relative'
                   }}>
                     <img 
-                      src={`http://localhost:5000/uploads/${blog.image}`} 
+                      src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${blog.image}`} 
                       alt={blog.title}
                       style={{ 
                         width: '100%', 

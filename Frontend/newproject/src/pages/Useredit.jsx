@@ -16,7 +16,7 @@ const Useredit = () => {
     if (user) {
       setUserdata({ name: user.name, email: user.email, password: user.password || '' });
     } else {
-      axios.get(`http://localhost:5000/user/${id}`)
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/${id}`)
         .then(res => {
           setUserdata({
             name: res.data.user.name || '',
@@ -38,7 +38,7 @@ const Useredit = () => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/user/${id}`, { name: userdata.name });
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/user/${id}`, { name: userdata.name });
       setalert('User updated successfully');
       navigate('/');
     } catch (error) {
