@@ -37,7 +37,7 @@ router.get('/google/callback', (req, res, next) => {
       `);
     }
     // Use environment variable for frontend URL if available
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173/';
+const frontendUrl = process.env.FRONTEND_URL;
     // Send user info and token to frontend
     const userData = {
       id: user._id,
