@@ -37,7 +37,7 @@ router.get('/google/callback', (req, res, next) => {
       `);
     }
     // Use environment variable for frontend URL if available
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173/';
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173/';
     // Send user info and token to frontend
     const userData = {
       id: user._id,
@@ -46,6 +46,7 @@ router.get('/google/callback', (req, res, next) => {
     };
     console.log('BACKEND CALLBACK: Redirecting to frontend with token and user info:', userData);
     // Redirect to frontend with token, name, and email as query params
+     // Use the deployed frontend URL from .env
     const redirectUrl = `${frontendUrl}?token=${user.token}&name=${encodeURIComponent(user.name)}&email=${encodeURIComponent(user.email)}`;
     res.send(`
       <html>
