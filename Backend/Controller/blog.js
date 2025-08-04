@@ -25,22 +25,41 @@ const likeBlog = async (req, res) => {
 
 
 // Configure multer for image upload
+const fs = require('fs');
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('Created uploads directory at:', uploadsDir);
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, uploadsDir);
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 
+// Create multer upload instance with error handling
 const upload = multer({ 
   storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB file size limit
+  },
   fileFilter: function (req, file, cb) {
+    // Check if file exists
+    if (!file) {
+      return cb(new Error('No file uploaded'), false);
+    }
+    
+    // Check file type
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
-      cb(new Error('Only image files are allowed!'), false);
+      cb(new Error('Only image files are allowed! Please upload a valid image file (JPEG, PNG, etc.)'), false);
     }
   }
 }).single('image');
@@ -48,11 +67,23 @@ const upload = multer({
 const handleAddBlog = async (req, res) => {
   upload(req, res, async function (err) {
     if (err) {
+      console.error('Upload error:', err);
       return res.status(400).json({ message: err.message });
     }
 
     try {
+      // Check if request body exists
+      if (!req.body) {
+        return res.status(400).json({ message: "Request body is missing" });
+      }
+
       const { title, content, author } = req.body;
+      
+      // Validate required fields
+      if (!title || !content || !author) {
+        return res.status(400).json({ message: "Title, content, and author are required" });
+      }
+
       const image = req.file ? req.file.filename : null;
       
       const blog = new Blog({ 
@@ -61,9 +92,11 @@ const handleAddBlog = async (req, res) => {
         author, 
         image 
       });
-        await blog.save();
+
+      await blog.save();
       res.status(200).json({ message: "Blog added successfully" });
     } catch (error) {
+      console.error('Blog save error:', error);
       res.status(500).json({ message: "Error in adding blog", error: error.message });
     }
   });

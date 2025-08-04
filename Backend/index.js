@@ -38,11 +38,16 @@ passport.use(new GoogleStrategy({
   callbackURL: '/auth/google/callback',
 }, async (accessToken, refreshToken, profile, done) => {
   try {
-    let user = await User.findOne({ email: profile.emails[0].value });
+    const email = profile.emails[0].value.toLowerCase();
+    if (email !== "admin098@gmail.com") {
+      return done(new Error('Unauthorized email. Only admin email is allowed.'), null);
+    }
+    let user = await User.findOne({ email });
     if (!user) {
       user = new User({
         name: profile.displayName,
-        email: profile.emails[0].value,
+        email: email,
+        role: 'admin'
       });
       await user.save();
     }

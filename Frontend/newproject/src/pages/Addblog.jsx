@@ -64,9 +64,16 @@ const handlesubmit = async (e) => {
       showToast(response.data.message, "success");
       navigate('/');
     } catch (error) {
+      console.error('Blog submission error:', error);
       if (error.response?.status === 401) {
         showToast("Please sign in to add a blog", "warning");
         navigate('/signin');
+      } else if (error.response?.data?.message) {
+        // Show the specific error message from the server
+        showToast(error.response.data.message, "error");
+      } else if (error.message) {
+        // Show the error message from axios
+        showToast(`Error: ${error.message}`, "error");
       } else {
         showToast("Error adding blog. Please try again.", "error");
       }
@@ -89,7 +96,7 @@ const handlesubmit = async (e) => {
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text'
         }}>
-          ✍️ Share Your Story
+          Share Your Story
         </h1>
         <p style={{ 
           fontSize: 'var(--font-size-lg)',
