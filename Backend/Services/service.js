@@ -7,7 +7,7 @@ const Generatetoken = (user)=>{
         name : user.name,
         email : user.email
     },secret, {
-        expiresIn: '1h' // Token valid for 1 hour
+        expiresIn: '7d' // Token valid for 7 days for better user experience
     });
     return token;
 }

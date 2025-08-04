@@ -10,7 +10,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       if (token) {
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`, {}, {
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/logout`, {}, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -19,6 +19,7 @@ const Navbar = () => {
       logout();
     } catch (error) {
       console.error('Logout error:', error);
+      // Still logout on the client side even if server request fails
       logout();
     }
   };

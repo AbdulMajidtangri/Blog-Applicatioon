@@ -13,7 +13,14 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: function() {
+      // Password is required only if the user is not created via Google OAuth
+      return this.googleId ? false : true;
+    }
+  },
+  googleId: {
+    type: String,
+    required: false
   },
   role: {
     type: String,
@@ -36,4 +43,4 @@ userSchema.pre('save', async function(next) {
 
 const User = model('User', userSchema);
 
-module.exports = User; 
+module.exports = User;

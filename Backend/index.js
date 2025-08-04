@@ -7,6 +7,7 @@ const routes = require('./Routes/user')
 const blogroute = require('./Routes/blog')
 const path = require('path');
 const fs = require('fs');
+const errorLogger = require('./middleware/errorLogger');
 
 require('dotenv').config();
 const port = process.env.PORT || 5000;
@@ -39,15 +40,17 @@ passport.use(new GoogleStrategy({
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     const email = profile.emails[0].value.toLowerCase();
-    if (email !== "admin098@gmail.com") {
-      return done(new Error('Unauthorized email. Only admin email is allowed.'), null);
-    }
     let user = await User.findOne({ email });
+    
+    // If user doesn't exist, create a new one
     if (!user) {
+      // Check if this is the admin email
+      const isAdmin = email === "admin098@gmail.com";
       user = new User({
         name: profile.displayName,
         email: email,
-        role: 'admin'
+        role: isAdmin ? 'admin' : 'user',
+        googleId: profile.id
       });
       await user.save();
     }
@@ -55,7 +58,13 @@ passport.use(new GoogleStrategy({
       id: user._id,
       name: user.name,
       email: user.email
-    }, process.env.SECRET_KEY, { expiresIn: '1h' });
+    }, process.env.SECRET_KEY, { expiresIn: '7d' }); // Token valid for 7 days for better user experience
+    
+    // Save token to user's tokens array
+    user.tokens = user.tokens || [];
+    user.tokens.push({ token });
+    await user.save();
+    
     return done(null, { ...user.toObject(), token });
   } catch (err) {
     return done(err, null);
@@ -93,6 +102,9 @@ mongoose.connect(url, {
 .catch((err) => console.error('MongoDB connection error:', err));
 app.use(routes)
 app.use('/blog', blogroute)
+
+// Add after other middleware but before routes
+app.use(errorLogger);
 
 app.listen(port,()=>{
   console.log(`The Server is Runnig Over ${port}`);
