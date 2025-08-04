@@ -131,7 +131,7 @@ const Home = () => {
             color: 'var(--gray-600)',
             fontSize: '1.25rem',
             fontWeight: '500'
-          }}>Loading amazing content...</h2>
+          }}>Loading content...</h2>
         </div>
       </div>
     );
