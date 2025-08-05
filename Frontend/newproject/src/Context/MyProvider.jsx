@@ -161,7 +161,7 @@ const MyProvider = ({ children }) => {
               gap: 'var(--space-2)'
             }}>
               <span style={{ fontSize: 'var(--font-size-lg)' }}>
-                {toast.type === 'success' ? '✅' :
+                {toast.type === 'success' ? '' :
                  toast.type === 'error' ? '❌' :
                  toast.type === 'warning' ? '⚠️' : 'ℹ️'}
               </span>
